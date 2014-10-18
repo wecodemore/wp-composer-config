@@ -2,8 +2,6 @@
 
 namespace WCM\WPComposerConfig;
 
-require __DIR__.'/../vendor/autoload.php';
-
 use Composer\Script\Event;
 use Composer\IO\IOInterface;
 use GuzzleHttp\Client;
