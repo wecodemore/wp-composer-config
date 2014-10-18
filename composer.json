@@ -1,0 +1,44 @@
+{
+	"name":              "wecodemore/wp-composer-config",
+	"version":           "1.0.0",
+	"description":       "Auto generate your wp-config as Composer Script",
+	"homepage":          "https://github.com/wecodemore/wp-composer-config",
+	"keywords":          [
+		"composer",
+		"wordpress",
+		"wp",
+		"wp-config",
+		"config",
+		"env"
+	],
+	"license":           "MIT",
+	"authors":           [
+		{
+			"name":     "Kaiser Franz Josef",
+			"email":    "wecodemore@gmail.com",
+			"homepage": "http://unserkaiser.com"
+		}
+	],
+	"support":           {
+		"issues": "https://github.com/wecodemore/wp-composer-config/issues"
+	},
+	"minimum-stability": "dev",
+	"extra":             {
+		"branch-alias": {
+			"dev-master": "1.x-dev"
+		}
+	},
+	"require":           {
+		"php":               ">=5.3.2",
+		"vlucas/phpdotenv":  "dev-master",
+		"guzzlehttp/guzzle": "*"
+	},
+	"suggest":           {
+		"cup-of-coffee": "Drinking a cup of coffee will make you a lot happier :)"
+	},
+	"autoload":          {
+		"psr-4": {
+			"WCM\\WPComposerConfig\\": "src/"
+		}
+	}
+}
