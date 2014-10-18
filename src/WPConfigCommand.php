@@ -94,7 +94,7 @@ class WPConfigCommand
 	 * @param Event $event
 	 * @return bool
 	 */
-	public static function run( Event $event = null )
+	public static function postPackageInstall( Event $event = null )
 	{
 		$package = $event
 			->getComposer()
