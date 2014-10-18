@@ -91,6 +91,7 @@ class WPConfigCommand
 	);
 
 	/**
+	 * Main/Init method
 	 * @param Event $event
 	 * @return bool
 	 */
@@ -181,6 +182,9 @@ class WPConfigCommand
 		}
 	}
 
+	/**
+	 * Add file header
+	 */
 	public static function addHeader()
 	{
 		self::append( 'Header', array(
@@ -191,6 +195,9 @@ class WPConfigCommand
 		) );
 	}
 
+	/**
+	 * Add the ABSPATH
+	 */
 	public static function addAbspath()
 	{
 		self::append( 'Path', array(
@@ -200,6 +207,9 @@ class WPConfigCommand
 		) );
 	}
 
+	/**
+	 * Add Salt & Auth Key constant hashes
+	 */
 	public static function addSalt()
 	{
 		$salt = self::fetchSalt();
@@ -233,18 +243,19 @@ class WPConfigCommand
 			: false;
 	}
 
-	public static function addConstants( $section, $constants )
+	/**
+	 * @param string $section
+	 * @param Array $constants
+	 */
+	public static function addConstants( $section, Array $constants )
 	{
 		$append = array();
 		$append[] = "\n# {$section}";
-		if ( is_array( $constants ) )
+		foreach ( $constants as $c )
 		{
-			foreach ( $constants as $c )
-			{
-				// Do not append in case
-				false === strpos( self::$source, $c )
-					AND $append[] = "define( '{$c}', getenv( '{$c}' ) );";
-			}
+			// Do not append in case
+			false === strpos( self::$source, $c )
+				AND $append[] = "define( '{$c}', getenv( '{$c}' ) );";
 		}
 		if ( 1 >= count( $append ) )
 			return;
@@ -252,10 +263,13 @@ class WPConfigCommand
 		self::append( $section, $append );
 	}
 
-	public static function append( $task, $content )
+	/**
+	 * @param string $task
+	 * @param Array $content
+	 */
+	public static function append( $task, Array $content )
 	{
-		is_array( $content )
-			AND $content = join( "\n", $content );
+		$content = join( "\n", $content );
 
 		if ( false === strpos( self::$source, $content ) )
 		{
