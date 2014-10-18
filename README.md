@@ -4,6 +4,20 @@ Usage as Composer post-package-install script. Auto generation of `wp-config.php
 WordPress installs. This package mostly is a convenience package that should make the build process
 easier.
 
+## What is it?
+
+This package is a `wp-config.php` generator for WordPress. It is based up on
+[Vance Lucas PHPDotEnv package](https://github.com/vlucas/phpdotenv) that offers a solution
+for adding a not version controlled/ignored `.env` file. The key/value data is made available
+as `getenv()`, `$_ENV` and `$_SERVER` variable afterwards. This config generator fetches a
+maintained list of configurable WordPress constants (like DB credentials) and builds a
+`wp-config.php` file in the WordPress root directory.
+
+## Suggested Tools
+
+ * Composer to handle packages like the WordPress core, themes and plugins
+ * 
+
 ## How To
 
 We recommend to use something like Andreys/"[@Rarst](https://twitter.com/Rarst)" recipe for a
