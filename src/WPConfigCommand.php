@@ -99,7 +99,6 @@ class WPConfigCommand
 			->getComposer()
 			->getPackage();
 		self::$io = $event
-			->getComposer()
 			->getIO();
 		$extra = $package->getExtra();
 
