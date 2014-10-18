@@ -30,7 +30,6 @@
 	},
 	"require":           {
 		"php":               ">=5.3.2",
-		"vlucas/phpdotenv":  "1.0.*@dev",
 		"guzzlehttp/guzzle": "*"
 	},
 	"suggest":           {
