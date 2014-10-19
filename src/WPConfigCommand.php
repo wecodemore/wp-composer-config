@@ -110,11 +110,11 @@ class WPConfigCommand
 
 		if ( ! isset( $extra['wordpress-install-dir'] ) )
 		{
-			$io->write( ' ├ You need to define the WP install dir in \"extra\" : { ... }. Aborting.' );
+			$io->write( ' |- You need to define the WP install dir in \"extra\" : { ... }. Aborting.' );
 			return false;
 		}
 
-		$wproot = self::getDir( getcwd()."/{$extra['wordpress-install-dir']}" );
+		$wproot = self::getDir($extra['wordpress-install-dir'] );
 		self::$target = "{$wproot}/wp-config.php";
 
 		self::setEnv( getcwd()."/{$extra['wordpress-env-dir']}/.env" );
@@ -131,7 +131,7 @@ class WPConfigCommand
 
 		foreach ( self::$sections as $section => $constants )
 		{
-			if ( $io->askConfirmation( " ├ Do you want to add {$section} [Y/n]? ", false ) )
+			if ( $io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
 				self::addConstants( $section, $constants );
 		}
 
@@ -141,7 +141,7 @@ class WPConfigCommand
 
 		self::addSalt();
 
-		$io->write( ' └ ✓ Done. wp-config.php successfully added.' );
+		$io->write( ' `- ✓ Done. wp-config.php successfully added.' );
 
 		return true;
 	}
@@ -221,12 +221,12 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		if ( ! $salt = self::fetchSalt() )
-			$io->write( ' └ ✗ WordPress Remote API for Salt generation did not respond' );
+			$io->write( ' `- ✗ WordPress Remote API for Salt generation did not respond' );
 
 		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
 			self::append( 'Auth Keys', $salt );
-			$io->write( ' └ ✓ Salt & Auth keys generated and added.' );
+			$io->write( ' `- ✓ Salt & Auth keys generated and added.' );
 		}
 	}
 
@@ -300,8 +300,8 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		$note = ! is_int( $result )
-			? ' ├ ✗ Could not write %s to `wp-config.php`'
-			: ' ├ ✓ Successfully added %s';
+			? ' |- ✗ Could not write %s to `wp-config.php`'
+			: ' |- ✓ Successfully added %s';
 
 		$io->write( sprintf( $note, $task ) );
 	}
@@ -318,10 +318,10 @@ class WPConfigCommand
 		if ( ! is_dir( getcwd()."/{$dir}" ) )
 		{
 			$io->write( sprintf(
-				' ├ The specified WP root location %s does not exist.',
+				' |- The specified WP root location %s does not exist.',
 				$dir
 			) );
-			$dir = $io->ask( ' ├ Please provide the root directory of WordPress: ', $dir );
+			$dir = $io->ask( ' |- Please provide the root directory of WordPress: ', $dir );
 			return self::getDir( $io, $dir );
 		}
 

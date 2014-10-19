@@ -29,8 +29,8 @@
 		}
 	},
 	"require":           {
-		"php":           ">=5.3.2",
-		"guzzle/guzzle": "3.9.*@dev"
+		"php":               ">=5.3.2",
+		"guzzlehttp/guzzle": "dev-master"
 	},
 	"suggest":           {
 		"cup-of-coffee": "Drinking a cup of coffee will make you a lot happier :)"
