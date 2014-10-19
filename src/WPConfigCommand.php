@@ -228,7 +228,10 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		if ( ! $salt = self::fetchSalt() )
+		{
 			$io->write( ' `- WordPress Remote API for Salt generation did not respond' );
+			return;
+		}
 
 		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
