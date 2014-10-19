@@ -137,10 +137,7 @@ class WPConfigCommand
 		self::addAbspath();
 
 		foreach ( self::$sections as $section => $constants )
-		{
-			if ( $io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
-				self::addConstants( $section, $constants );
-		}
+			self::addConstants( $section, $constants );
 
 		self::append( 'Database Credentials & Settings', array(
 			"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
@@ -148,7 +145,7 @@ class WPConfigCommand
 
 		self::addSalt();
 
-		$io->write( ' `- Done. wp-config.php successfully added.' );
+		$io->write( ' \_ Done. wp-config.php successfully added.' );
 
 		return true;
 	}
@@ -200,12 +197,14 @@ class WPConfigCommand
 	 */
 	public static function addHeader()
 	{
-		self::append( 'Header', array(
+		$content = array(
 			"<?php\n# ==== WordPress Configuration =====\n",
 			"# SHORTS",
 			"define( 'DS', DIRECTORY_SEPARATOR );",
 			"define( 'PS', PATH_SEPARATOR );",
-		) );
+		);
+		false === strpos( self::$source, $content )
+			AND self::append( 'Header', $content );
 	}
 
 	/**
@@ -213,11 +212,13 @@ class WPConfigCommand
 	 */
 	public static function addAbspath()
 	{
-		self::append( 'Path', array(
+		$content = array(
 			"# Absolute path to the WordPress directory.",
 			"if ( ! defined( 'ABSPATH' ) )",
 			"\tdefine( 'ABSPATH', dirname( __FILE__ ).DS );",
-		) );
+		);
+		false === strpos( self::$source, $content )
+			AND self::append( 'Path', $content );
 	}
 
 	/**
@@ -229,14 +230,13 @@ class WPConfigCommand
 		$io = self::$io;
 		if ( ! $salt = self::fetchSalt() )
 		{
-			$io->write( ' `- WordPress Remote API for Salt generation did not respond' );
+			$io->write( ' |- WordPress Remote API for Salt generation did not respond' );
 			return;
 		}
-
-		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
+		elseif ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
 			self::append( 'Auth Keys', array( $salt ) );
-			$io->write( ' `- Salt & Auth keys generated and added.' );
+			$io->write( ' |- Salt & Auth keys generated and added.' );
 		}
 	}
 
@@ -271,8 +271,11 @@ class WPConfigCommand
 		foreach ( $constants as $c )
 		{
 			// Do not append in case
-			false === strpos( self::$source, $c )
-				AND $append[] = "define( '{$c}', getenv( '{$c}' ) );";
+			if ( false === strpos( self::$source, $c ) )
+			{
+				if ( self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
+					$append[] = "define( '{$c}', getenv( '{$c}' ) );";
+			}
 		}
 		if ( 1 >= count( $append ) )
 			return;
@@ -288,16 +291,12 @@ class WPConfigCommand
 	{
 		$content = join( "\n", $content );
 
-		if ( false === strpos( self::$source, $content ) )
-		{
-			$result = file_put_contents(
-				self::$target,
-				"{$content}\n\n",
-				FILE_APPEND
-			);
-			self::isSuccess( $task, $result );
-		}
-
+		$result = file_put_contents(
+			self::$target,
+			"{$content}\n\n",
+			FILE_APPEND
+		);
+		self::isSuccess( $task, $result );
 	}
 
 	/**
