@@ -108,6 +108,13 @@ class WPConfigCommand
 		self::$io = $io;
 		$extra = $package->getExtra();
 
+		// Add Composer autoloader from the root, else Guzze won't load React Promises..
+		$config = $event
+			->getComposer()
+			->getConfig();
+		$vendorDir = $config->get( 'vendor-dir' );
+		require getcwd()."/{$vendorDir}/autoload.php";
+
 		if ( ! isset( $extra['wordpress-install-dir'] ) )
 		{
 			$io->write( ' |- You need to define the WP install dir in \"extra\" : { ... }. Aborting.' );
@@ -141,7 +148,7 @@ class WPConfigCommand
 
 		self::addSalt();
 
-		$io->write( ' `- ✓ Done. wp-config.php successfully added.' );
+		$io->write( ' `- Done. wp-config.php successfully added.' );
 
 		return true;
 	}
@@ -221,12 +228,12 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		if ( ! $salt = self::fetchSalt() )
-			$io->write( ' `- ✗ WordPress Remote API for Salt generation did not respond' );
+			$io->write( ' `- WordPress Remote API for Salt generation did not respond' );
 
 		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
-			self::append( 'Auth Keys', $salt );
-			$io->write( ' `- ✓ Salt & Auth keys generated and added.' );
+			self::append( 'Auth Keys', array( $salt ) );
+			$io->write( ' `- Salt & Auth keys generated and added.' );
 		}
 	}
 
@@ -300,8 +307,8 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		$note = ! is_int( $result )
-			? ' |- ✗ Could not write %s to `wp-config.php`'
-			: ' |- ✓ Successfully added %s';
+			? ' |- Could not write %s to `wp-config.php`'
+			: ' |- Successfully added %s';
 
 		$io->write( sprintf( $note, $task ) );
 	}
