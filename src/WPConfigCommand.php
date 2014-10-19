@@ -139,9 +139,9 @@ class WPConfigCommand
 		foreach ( self::$sections as $section => $constants )
 			self::addConstants( $section, $constants );
 
-		self::append( 'DB-Table prefix', array(
-			"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
-		) );
+		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
+		false === strpos( self::$source, $prefix )
+			AND self::append( 'DB-Table prefix', array( $prefix ) );
 
 		self::addSalt();
 
