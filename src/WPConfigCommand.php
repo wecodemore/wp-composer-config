@@ -108,7 +108,7 @@ class WPConfigCommand
 
 		if ( ! isset( $extra['wordpress-install-dir'] ) )
 		{
-			self::$io->write( ' |- You need to define the WP install dir in \"extra\" : { ... }. Aborting.' );
+			self::$io->write( ' ├ You need to define the WP install dir in \"extra\" : { ... }. Aborting.' );
 			return false;
 		}
 
@@ -128,7 +128,7 @@ class WPConfigCommand
 
 		foreach ( self::$sections as $section => $constants )
 		{
-			if ( self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
+			if ( self::$io->askConfirmation( " ├ Do you want to add {$section} [Y/n]? ", false ) )
 				self::addConstants( $section, $constants );
 		}
 
@@ -138,7 +138,7 @@ class WPConfigCommand
 
 		self::addSalt();
 
-		self::$io->write( ' `- Done. wp-config.php successfully added.' );
+		self::$io->write( ' └ ✓ Done. wp-config.php successfully added.' );
 
 		return true;
 	}
@@ -216,12 +216,12 @@ class WPConfigCommand
 	public static function addSalt()
 	{
 		if ( ! $salt = self::fetchSalt() )
-			self::$io->write( ' |- WordPress Remote API for Salt generation did not respond' );
+			self::$io->write( ' └ ✗ WordPress Remote API for Salt generation did not respond' );
 
 		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
 			self::append( 'Auth Keys', $salt );
-			self::$io->write( ' |- Salt & Auth keys generated and added.' );
+			self::$io->write( ' └ ✓ Salt & Auth keys generated and added.' );
 		}
 	}
 
@@ -293,8 +293,8 @@ class WPConfigCommand
 	public static function isSuccess( $task, $result )
 	{
 		$note = ! is_int( $result )
-			? ' |- Could not write %s to `wp-config.php`'
-			: ' |- Successfully added %s';
+			? ' ├ ✗ Could not write %s to `wp-config.php`'
+			: ' ├ ✓ Successfully added %s';
 
 		self::$io->write( sprintf( $note, $task ) );
 	}
@@ -310,10 +310,10 @@ class WPConfigCommand
 		if ( ! is_dir( getcwd()."/{$dir}" ) )
 		{
 			$io->write( sprintf(
-				' |- The specified WP root location %s does not exist.',
+				' ├ The specified WP root location %s does not exist.',
 				$dir
 			) );
-			$dir = $io->ask( ' |- Please provide the root directory of WordPress: ', $dir );
+			$dir = $io->ask( ' ├ Please provide the root directory of WordPress: ', $dir );
 			return self::getDir( $io, $dir );
 		}
 
