@@ -89,7 +89,7 @@ class WPConfigCommand
 		'Performance Settings' => array(
 			'COMPRESS_CSS', 'COMPRESS_SCRIPTS', 'CONCATENATE_SCRIPTS', 'ENFORCE_GZIP',
 			'SCRIPT_DEBUG',
-		)
+		),
 	);
 
 	/**
@@ -140,8 +140,8 @@ class WPConfigCommand
 			self::addConstants( $section, $constants );
 
 		self::append( 'Database Credentials & Settings', array(
-			"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
-		) );
+				"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
+			) );
 
 		self::addSalt();
 
@@ -203,7 +203,7 @@ class WPConfigCommand
 			"define( 'DS', DIRECTORY_SEPARATOR );",
 			"define( 'PS', PATH_SEPARATOR );",
 		);
-		false === strpos( self::$source, $content )
+		false === strpos( self::$source, join( "\n", $content ) )
 			AND self::append( 'Header', $content );
 	}
 
@@ -217,7 +217,7 @@ class WPConfigCommand
 			"if ( ! defined( 'ABSPATH' ) )",
 			"\tdefine( 'ABSPATH', dirname( __FILE__ ).DS );",
 		);
-		false === strpos( self::$source, $content )
+		false === strpos( self::$source, join( "\n", $content ) )
 			AND self::append( 'Path', $content );
 	}
 
@@ -266,6 +266,9 @@ class WPConfigCommand
 	 */
 	public static function addConstants( $section, Array $constants )
 	{
+		if ( ! self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
+			return;
+
 		$append = array();
 		$append[] = "\n# {$section}";
 		foreach ( $constants as $c )
@@ -273,8 +276,7 @@ class WPConfigCommand
 			// Do not append in case
 			if ( false === strpos( self::$source, $c ) )
 			{
-				if ( self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
-					$append[] = "define( '{$c}', getenv( '{$c}' ) );";
+				$append[] = "define( '{$c}', getenv( '{$c}' ) );";
 			}
 		}
 		if ( 1 >= count( $append ) )
