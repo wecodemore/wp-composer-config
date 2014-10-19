@@ -8,13 +8,17 @@ use GuzzleHttp\Client;
 
 class WPConfigCommand
 {
+	/** @var string */
 	private static $target;
 
+	/** @var Composer\IO\IOInterface */
 	private static $io;
 
+	/** @var string */
 	private static $env;
 
-	private static $source;
+	/** @var string */
+	private static $source = '';
 
 	private static $sections = array(
 		'Database Creds & Settings' => array(
@@ -110,8 +114,10 @@ class WPConfigCommand
 
 		self::$target = getcwd()."/{$extra['wordpress-install-dir']}/wp-config.php";
 
-		self::setEnv( getcwd()."/{$extra['wordpress-env-dir']}" );
-		self::$source = file_get_contents( self::$target );
+		self::setEnv( getcwd()."/{$extra['wordpress-env-dir']}/.env" );
+
+		file_exists( self::$target )
+			AND self::$source = file_get_contents( self::$target );
 
 		self::addHeader();
 		self::append( 'Header', array( sprintf(
@@ -209,8 +215,7 @@ class WPConfigCommand
 	 */
 	public static function addSalt()
 	{
-		$salt = self::fetchSalt();
-		if ( ! $salt )
+		if ( ! $salt = self::fetchSalt() )
 			self::$io->write( ' |- WordPress Remote API for Salt generation did not respond' );
 
 		if ( false === strpos( self::$source, 'AUTH_KEY' ) )
