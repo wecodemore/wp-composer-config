@@ -21,7 +21,7 @@ class WPConfigCommand
 	private static $source = '';
 
 	private static $sections = array(
-		'Database Creds & Settings' => array(
+		'Database Credentials & Settings' => array(
 			'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST',
 			'DB_CHARSET', 'DB_COLLATE',
 			'WP_ALLOW_REPAIR',
@@ -130,7 +130,7 @@ class WPConfigCommand
 			AND self::$source = file_get_contents( self::$target );
 
 		self::addHeader();
-		self::append( 'Header', array( sprintf(
+		self::append( '.env Loader', array( sprintf(
 			"Dotenv::load( __DIR__.'/../%s' );",
 			$extra['wordpress-env-dir']
 		) ) );
@@ -139,7 +139,7 @@ class WPConfigCommand
 		foreach ( self::$sections as $section => $constants )
 			self::addConstants( $section, $constants );
 
-		self::append( 'Database Credentials & Settings', array(
+		self::append( 'DB-Table prefix', array(
 			"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
 		) );
 
