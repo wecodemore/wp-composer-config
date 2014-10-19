@@ -140,8 +140,8 @@ class WPConfigCommand
 			self::addConstants( $section, $constants );
 
 		self::append( 'Database Credentials & Settings', array(
-				"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
-			) );
+			"\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );',
+		) );
 
 		self::addSalt();
 
@@ -311,8 +311,8 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		$note = ! is_int( $result )
-			? ' |- Could not write %s to `wp-config.php`'
-			: ' |- Successfully added %s';
+			? ' | \_ Could not write %s to `wp-config.php`'
+			: ' | \_ Successfully added %s';
 
 		$io->write( sprintf( $note, $task ) );
 	}
