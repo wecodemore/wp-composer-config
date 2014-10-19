@@ -130,19 +130,11 @@ class WPConfigCommand
 			AND self::$source = file_get_contents( self::$target );
 
 		self::addHeader();
-		self::append( '.env Loader', array( sprintf(
-			"Dotenv::load( __DIR__.'/../%s' );",
-			$extra['wordpress-env-dir']
-		) ) );
+		self::addLoader( $extra );
 		self::addAbspath();
-
 		foreach ( self::$sections as $section => $constants )
 			self::addConstants( $section, $constants );
-
-		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
-		false === strpos( self::$source, $prefix )
-			AND self::append( 'DB-Table prefix', array( $prefix ) );
-
+		self::addTablePrefix();
 		self::addSalt();
 
 		$io->write( ' \_ Done. wp-config.php successfully added.' );
@@ -205,6 +197,20 @@ class WPConfigCommand
 		);
 		false === strpos( self::$source, join( "\n", $content ) )
 			AND self::append( 'Header', $content );
+	}
+
+	/**
+	 * Add PHPDotEnv .env file loader
+	 * @param array $extra
+	 */
+	public static function addLoader( Array $extra )
+	{
+		$loader = array( sprintf(
+			"Dotenv::load( __DIR__.'/../%s' );",
+			$extra['wordpress-env-dir']
+		) );
+		false === strpos( self::$source, $loader )
+			AND self::append( '.env Loader', $loader );
 	}
 
 	/**
@@ -283,6 +289,16 @@ class WPConfigCommand
 			return;
 
 		self::append( $section, $append );
+	}
+
+	/**
+	 * Add table prefix
+	 */
+	public static function addTablePrefix()
+	{
+		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
+		false === strpos( self::$source, $prefix )
+			AND self::append( 'DB-Table prefix', array( $prefix ) );
 	}
 
 	/**
