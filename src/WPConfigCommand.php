@@ -132,7 +132,7 @@ class WPConfigCommand
 		self::addHeader();
 		$up = str_repeat( '../', count( explode( '/', $vendorDir ) ) );
 		$autoloader = 'require __DIR__."/'.$up.$vendorDir.'/autoload.php";';
-		self::addLoader( $extra, $autoloader );
+		self::addLoader( $autoloader, $extra );
 		self::addAbspath();
 		foreach ( self::$sections as $section => $constants )
 			self::addConstants( $section, $constants );
@@ -204,15 +204,16 @@ class WPConfigCommand
 
 	/**
 	 * Add PHPDotEnv .env file loader
+	 * @param string $autoloader
 	 * @param array $extra
 	 */
-	public static function addLoader( Array $extra, $autoloader )
+	public static function addLoader( $autoloader, Array $extra )
 	{
+		$loader[] = $autoloader;
 		$loader[] = sprintf(
 			"Dotenv::load( __DIR__.'/../%s' );",
 			$extra['wordpress-env-dir']
 		);
-		$loader[] = $autoloader;
 		false === strpos( self::$source, join( "\n", $loader ) )
 			AND self::append( '.env Loader', $loader );
 	}
