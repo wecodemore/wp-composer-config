@@ -130,8 +130,7 @@ class WPConfigCommand
 			AND self::$source = file_get_contents( self::$target );
 
 		self::addHeader();
-		$up = str_repeat( '../', count( explode( '/', $vendorDir ) ) );
-		$autoloader = 'require __DIR__."/'.$up.$vendorDir.'/autoload.php";';
+		$autoloader = 'require __DIR__."/../'.$vendorDir.'/autoload.php";';
 		self::addLoader( $autoloader, $extra );
 		self::addAbspath();
 		foreach ( self::$sections as $section => $constants )
