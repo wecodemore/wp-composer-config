@@ -242,7 +242,6 @@ class WPConfigCommand
 		elseif ( false === strpos( self::$source, 'AUTH_KEY' ) )
 		{
 			self::append( 'Auth Keys', array( $salt ) );
-			$io->write( ' |- Salt & Auth keys generated and added.' );
 		}
 	}
 
