@@ -299,7 +299,7 @@ class WPConfigCommand
 	 */
 	public static function addTablePrefix()
 	{
-		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
+		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DATABASE_TABLE_PREFIX\' );';
 		false === strpos( self::$source, $prefix )
 			AND self::append( 'DB-Table prefix', array( $prefix ) );
 	}
