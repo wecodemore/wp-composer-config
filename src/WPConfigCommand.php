@@ -22,8 +22,8 @@ class WPConfigCommand
 
 	private static $sections = array(
 		'Database Credentials & Settings' => array(
-			'DATABASE_NAME', 'DATABASE_USER', 'DATABASE_PASSWORD', 'DATABASE_HOST',
-			'DATABASE_CHARSET', 'DATABASE_COLLATE',
+			'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST',
+			'DB_CHARSET', 'DB_COLLATE',
 			'WP_ALLOW_REPAIR',
 			'CUSTOM_USER_TABLE', 'CUSTOM_USER_META_TABLE',
 		),
@@ -299,7 +299,7 @@ class WPConfigCommand
 	 */
 	public static function addTablePrefix()
 	{
-		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DATABASE_TABLE_PREFIX\' );';
+		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
 		false === strpos( self::$source, $prefix )
 			AND self::append( 'DB-Table prefix', array( $prefix ) );
 	}
