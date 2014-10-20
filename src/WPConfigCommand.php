@@ -22,8 +22,8 @@ class WPConfigCommand
 
 	private static $sections = array(
 		'Database Credentials & Settings' => array(
-			'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST',
-			'DB_CHARSET', 'DB_COLLATE',
+			'DATABASE_NAME', 'DATABASE_USER', 'DATABASE_PASSWORD', 'DATABASE_HOST',
+			'DATABASE_CHARSET', 'DATABASE_COLLATE',
 			'WP_ALLOW_REPAIR',
 			'CUSTOM_USER_TABLE', 'CUSTOM_USER_META_TABLE',
 		),
