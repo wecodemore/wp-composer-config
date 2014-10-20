@@ -212,7 +212,7 @@ class WPConfigCommand
 			$extra['wordpress-env-dir']
 		);
 		$loader[] = $autoloader;
-		false === strpos( self::$source, $loader )
+		false === strpos( self::$source, join( "\n", $loader ) )
 			AND self::append( '.env Loader', $loader );
 	}
 
