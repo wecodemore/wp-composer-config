@@ -303,7 +303,7 @@ class WPConfigCommand
 
 	public static function addSettingsLoader()
 	{
-		$loader = "\n\n".'require_once(ABSPATH . 'wp-settings.php');';
+		$loader = "\n\n".'require_once( ABSPATH.\'wp-settings.php\' );';
 		false === strpos( self::$source, $loader )
 			AND self::append( 'DB-Table prefix', array( $loader ) );
 	}
