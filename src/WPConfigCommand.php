@@ -136,6 +136,7 @@ class WPConfigCommand
 			self::addConstants( $section, $constants );
 		self::addTablePrefix();
 		self::addSalt();
+		self::addSettingsLoader();
 
 		$io->write( ' \_ Done. wp-config.php successfully added.' );
 
@@ -298,6 +299,13 @@ class WPConfigCommand
 		$prefix = "\n\n".'$GLOBALS[\'table_prefix\'] = getenv( \'DB_TABLE_PREFIX\' );';
 		false === strpos( self::$source, $prefix )
 			AND self::append( 'DB-Table prefix', array( $prefix ) );
+	}
+
+	public static function addSettingsLoader()
+	{
+		$loader = "\n\n".'require_once(ABSPATH . 'wp-settings.php');';
+		false === strpos( self::$source, $loader )
+			AND self::append( 'DB-Table prefix', array( $loader ) );
 	}
 
 	/**
