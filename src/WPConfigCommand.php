@@ -121,7 +121,7 @@ class WPConfigCommand
 			return false;
 		}
 
-		$wproot = self::getDir($extra['wordpress-install-dir'] );
+		$wproot = self::getDir( $extra['wordpress-install-dir'] );
 		self::$target = "{$wproot}/wp-config.php";
 
 		self::setEnv( getcwd()."/{$extra['wordpress-env-dir']}/.env" );
@@ -130,7 +130,8 @@ class WPConfigCommand
 			AND self::$source = file_get_contents( self::$target );
 
 		self::addHeader();
-		self::addLoader( $extra );
+		$autoloader = 'require getcwd().\"/{$vendorDir}/autoload.php\";';
+		self::addLoader( $extra, $autoloader );
 		self::addAbspath();
 		foreach ( self::$sections as $section => $constants )
 			self::addConstants( $section, $constants );
@@ -204,14 +205,15 @@ class WPConfigCommand
 	 * Add PHPDotEnv .env file loader
 	 * @param array $extra
 	 */
-	public static function addLoader( Array $extra )
+	public static function addLoader( Array $extra, $autoloader )
 	{
-		$loader = sprintf(
+		$loader[] = sprintf(
 			"Dotenv::load( __DIR__.'/../%s' );",
 			$extra['wordpress-env-dir']
 		);
+		$loader[] = $autoloader;
 		false === strpos( self::$source, $loader )
-			AND self::append( '.env Loader', array( $loader ) );
+			AND self::append( '.env Loader', $loader );
 	}
 
 	/**
