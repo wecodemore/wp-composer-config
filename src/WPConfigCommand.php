@@ -205,12 +205,12 @@ class WPConfigCommand
 	 */
 	public static function addLoader( Array $extra )
 	{
-		$loader = array( sprintf(
+		$loader = sprintf(
 			"Dotenv::load( __DIR__.'/../%s' );",
 			$extra['wordpress-env-dir']
-		) );
+		);
 		false === strpos( self::$source, $loader )
-			AND self::append( '.env Loader', $loader );
+			AND self::append( '.env Loader', array( $loader ) );
 	}
 
 	/**
