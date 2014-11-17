@@ -363,8 +363,8 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		$note = ! is_int( $result )
-			? ' | \- Could not write %s to `wp-config.php`'
-			: ' | \- Successfully added %s';
+			? ' | `- Could not write %s to `wp-config.php`'
+			: ' | `- Successfully added %s';
 
 		$io->write( sprintf( $note, $task ) );
 	}
