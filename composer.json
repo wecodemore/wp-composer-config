@@ -1,6 +1,5 @@
 {
 	"name":              "wecodemore/wp-composer-config",
-	"version":           "1.0.6",
 	"description":       "Auto generate your wp-config as Composer Script",
 	"homepage":          "https://github.com/wecodemore/wp-composer-config",
 	"keywords":          [

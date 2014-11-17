@@ -305,12 +305,11 @@ class WPConfigCommand
 			// Do not append in case
 			if ( false === strpos( self::$source, $c ) )
 			{
+				$c = "getenv( '{$c}' )";
 				if ( in_array( $c, self::$isBool ) )
 					$c = "filter_var( $c, FILTER_VALIDATE_BOOLEAN )";
 				elseif ( in_array( $c, self::$isInt ) )
 					$c = "filter_var( $c, FILTER_VALIDATE_INT )";
-				else
-					$c = "getenv( '{$c}' )";
 
 				$append[] = "define( '{$c}', {$c} );";
 			}
