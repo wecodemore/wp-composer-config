@@ -87,9 +87,29 @@ class WPConfigCommand
 			'WP_MEMORY_LIMIT', 'WP_MAX_MEMORY_LIMIT',
 		),
 		'Performance Settings' => array(
-			'COMPRESS_CSS', 'COMPRESS_SCRIPTS', 'CONCATENATE_SCRIPTS', 'ENFORCE_GZIP',
-			'SCRIPT_DEBUG',
+			'COMPRESS_CSS', 'COMPRESS_SCRIPTS', 'CONCATENATE_SCRIPTS', 'ENFORCE_GZIP', 'SCRIPT_DEBUG',
 		),
+	);
+
+	private static $isBool = array(
+		'WP_ALLOW_REPAIR',
+		'WP_DEBUG', 'WP_DEBUG_LOG', 'WP_DEBUG_DISPLAY', 'SAVEQUERIES', 'DIEONDBERROR',
+		'CORE_UPGRADE_SKIP_NEW_BUNDLED',
+		'WP_POST_REVISIONS',
+		'MEDIA_TRASH', 'IMAGE_EDIT_OVERWRITE',
+		'DISABLE_WP_CRON',
+		'DISALLOW_FILE_EDIT', 'DISALLOW_FILE_MODS',
+		'DISALLOW_UNFILTERED_HTML', 'ALLOW_UNFILTERED_UPLOADS',
+		'FORCE_SSL_LOGIN', 'FORCE_SSL_ADMIN',
+		'FTP_SSH', 'FTP_SSL',
+		'COMPRESS_CSS', 'COMPRESS_SCRIPTS', 'CONCATENATE_SCRIPTS', 'ENFORCE_GZIP', 'SCRIPT_DEBUG',
+	);
+
+	private static $isInt = array(
+		'AUTOSAVE_INTERVAL', 'EMPTY_TRASH_DAYS',
+		'WP_CRON_LOCK_TIMEOUT',
+		'WP_MAIL_INTERVAL',
+		'FS_TIMEOUT', 'FS_CONNECT_TIMEOUT',
 	);
 
 	/**
@@ -275,7 +295,7 @@ class WPConfigCommand
 	 */
 	public static function addConstants( $section, Array $constants )
 	{
-		if ( ! self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", false ) )
+		if ( ! self::$io->askConfirmation( " |- Do you want to add {$section} [Y/n]? ", 'Y' ) )
 			return;
 
 		$append = array();
@@ -285,7 +305,14 @@ class WPConfigCommand
 			// Do not append in case
 			if ( false === strpos( self::$source, $c ) )
 			{
-				$append[] = "define( '{$c}', getenv( '{$c}' ) );";
+				if ( in_array( $c, self::$isBool ) )
+					$c = "filter_var( $c, FILTER_VALIDATE_BOOLEAN )";
+				elseif ( in_array( $c, self::$isInt ) )
+					$c = "filter_var( $c, FILTER_VALIDATE_INT )";
+				else
+					$c = "getenv( '{$c}' )";
+
+				$append[] = "define( '{$c}', {$c} );";
 			}
 		}
 		if ( 1 >= count( $append ) )
@@ -337,8 +364,8 @@ class WPConfigCommand
 		/** @var IOInterface $io */
 		$io = self::$io;
 		$note = ! is_int( $result )
-			? ' | \_ Could not write %s to `wp-config.php`'
-			: ' | \_ Successfully added %s';
+			? ' | \- Could not write %s to `wp-config.php`'
+			: ' | \- Successfully added %s';
 
 		$io->write( sprintf( $note, $task ) );
 	}
