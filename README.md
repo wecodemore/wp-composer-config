@@ -1,5 +1,10 @@
 # Auto generate your `wp-config.php`
 
+[![Latest Stable Version](https://poser.pugx.org/wecodemore/wp-composer-config/v/stable.svg)](https://packagist.org/packages/wecodemore/wp-composer-config)
+[![Total Downloads](https://poser.pugx.org/wecodemore/wp-composer-config/downloads.svg)](https://packagist.org/packages/wecodemore/wp-composer-config)
+[![Latest Unstable Version](https://poser.pugx.org/wecodemore/wp-composer-config/v/unstable.svg)](https://packagist.org/packages/wecodemore/wp-composer-config)
+[![License](https://poser.pugx.org/wecodemore/wp-composer-config/license.svg)](https://packagist.org/packages/wecodemore/wp-composer-config)
+
 Usage as Composer post-package-install script. Auto generation of `wp-config.php` files for
 WordPress installs. This package mostly is a convenience package that should make the build process
 easier.
@@ -12,7 +17,7 @@ offers a solution for adding a not version controlled/ignored `.env` file. The k
 is made available as `getenv()`, `$_ENV` and `$_SERVER` variable afterwards. This config
 generator fetches a maintained list of configurable WordPress constants (like DB credentials)
 and builds a `wp-config.php` file in the WordPress root directory. This does not make increase
-security, but it helps preventing that you push sensitive information to a version controled
+security, but it helps preventing that you push sensitive information to a version controlled
 repository. It also makes it easier to maintain different environments like development,
 staging and production.
 
@@ -47,6 +52,21 @@ Finally the script needs some variable set for the `extra` object:
 	 }
 
 That's it.
+
+If you want to run it on demand, you might want to give it a custom name that you can
+refer to on the command line. Avoid `config` as this is an internal Composer command:
+
+	"scripts" : {
+		"wp-config" : [
+			"WCM\\WPComposerConfig\\WPConfigCommand::postPackageInstall"
+		]
+	},
+
+This way you can simply enter
+
+	composer wp-config
+
+in your CLI and run it whenever it pleases you.
 
 ## How To: Use it
 
@@ -100,4 +120,4 @@ now. But if you think you can make it happen, just fork the repo and send a Pull
 #### **Q:** What version should I refer to in my `composer.json`?
 
 **A:** We use [semantic versioning](http://semver.org/), so you will want to stay
-up to date with major versions.
+up to date with **major** versions.
