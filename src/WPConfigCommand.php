@@ -159,7 +159,7 @@ class WPConfigCommand
 		self::addSalt();
 		self::addSettingsLoader();
 
-		$io->write( ' \_ Done. wp-config.php successfully added.' );
+		$io->write( ' \... Done. wp-config.php successfully added.' );
 
 		return true;
 	}
@@ -305,13 +305,14 @@ class WPConfigCommand
 			// Do not append in case
 			if ( false === strpos( self::$source, $c ) )
 			{
-				$c = "getenv( '{$c}' )";
+				$env = $c;
+				$env = sprintf( 'getenv( "%s" )', $env );
 				if ( in_array( $c, self::$isBool ) )
-					$c = "filter_var( $c, FILTER_VALIDATE_BOOLEAN )";
+					$env = sprintf( 'filter_var( %s, FILTER_VALIDATE_BOOLEAN )', $env );
 				elseif ( in_array( $c, self::$isInt ) )
-					$c = "filter_var( $c, FILTER_VALIDATE_INT )";
+					$env = sprintf( 'filter_var( %s, FILTER_VALIDATE_INT )', $env );
 
-				$append[] = "define( '{$c}', {$c} );";
+				$append[] = sprintf( 'define( "%s", %s );', $c, $env );
 			}
 		}
 		if ( 1 >= count( $append ) )
