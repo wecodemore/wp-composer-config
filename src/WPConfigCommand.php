@@ -133,7 +133,8 @@ class WPConfigCommand
 			->getComposer()
 			->getConfig();
 		$vendorDir = $config->get( 'vendor-dir' );
-		require getcwd()."/{$vendorDir}/autoload.php";
+		file_exists( "{$vendorDir}/autoload.php" )
+			AND require "{$vendorDir}/autoload.php";
 
 		if ( ! isset( $extra['wordpress-install-dir'] ) )
 		{
