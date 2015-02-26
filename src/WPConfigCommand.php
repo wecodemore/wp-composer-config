@@ -281,7 +281,7 @@ class WPConfigCommand
 		return (
 			200 === abs( intval( $response->getStatusCode() ) )
 			AND "OK" === $response->getReasonPhrase()
-			AND "text/plain;charset=utf-8" === $response->getHeader( 'content-type' )
+			AND "text/plain;charset=utf-8" === strtolower( $response->getHeader( 'content-type' ) )
 		)
 			? $response
 				->getBody()
