@@ -21,6 +21,10 @@ security, but it helps preventing that you push sensitive information to a versi
 repository. It also makes it easier to maintain different environments like development,
 staging and production.
 
+Example:
+
+![Example of the CLI process](https://cdn.rawgit.com/wecodemore/wp-composer-config/master/composer-run-script.gif)
+
 ## How To: Setup
 
 We recommend to use something like Andreys/"[@Rarst](https://twitter.com/Rarst)" recipe for a
