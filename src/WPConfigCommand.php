@@ -306,7 +306,6 @@ class WPConfigCommand
 			// Do not append in case
 			if ( false === strpos( self::$source, $c ) )
 			{
-<<<<<<< HEAD
 				$env = $c;
 				$env = sprintf( 'getenv( "%s" )', $env );
 				if ( in_array( $c, self::$isBool ) )
@@ -315,7 +314,6 @@ class WPConfigCommand
 					$env = sprintf( 'filter_var( %s, FILTER_VALIDATE_INT )', $env );
 
 				$append[] = sprintf( 'define( "%s", %s );', $c, $env );
-=======
 				$c_name = $c;
 				$c_val  = "getenv( '{$c_name}' )";
 				if ( in_array( $c_name, self::$isBool ) )
@@ -324,7 +322,6 @@ class WPConfigCommand
 					$c_val = "filter_var( $c_val, FILTER_VALIDATE_INT )";
 
 				$append[] = "define( '{$c_name}', {$c_val} );";
->>>>>>> 978e4b13c10797a860367a211a731f2fa989aab0
 			}
 		}
 		if ( 1 >= count( $append ) )
